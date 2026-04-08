@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我们的旅行计划</title>
+    <style>
+        /* 这里是控制颜色的地方，你可以把 #FF6B6B 换成你朋友喜欢的颜色 */
+        :root { --primary: #FF6B6B; --bg: #F7F9FC; --text: #2D3436; }
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 20px; display: flex; justify-content: center; }
+        .container { max-width: 800px; width: 100%; background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); overflow: hidden; display: flex; flex-direction: column; }
+        header { background: var(--primary); color: white; padding: 30px; text-align: center; }
+        header h1 { margin: 0; font-size: 24px; letter-spacing: 2px; }
+        .content-wrapper { display: flex; flex-direction: row; min-height: 400px; }
+        .timeline { width: 30%; background: #fdfdfd; border-right: 1px solid #eee; padding: 20px 0; }
+        
+        /* 交互按钮样式 */
+        .day-btn { display: block; width: 100%; padding: 15px 20px; text-align: left; background: none; border: none; font-size: 16px; cursor: pointer; transition: 0.3s; border-left: 4px solid transparent; }
+        .day-btn:hover { background: #f0f0f0; }
+        .day-btn.active { border-left-color: var(--primary); background: #fff5f5; font-weight: bold; color: var(--primary); }
+        
+        .details { width: 70%; padding: 30px; position: relative; }
+        .day-content { display: none; animation: fadeIn 0.5s ease; }
+        .day-content.active { display: block; }
+        .day-content h2 { margin-top: 0; color: var(--primary); }
+        .tag { display: inline-block; background: #eee; padding: 5px 10px; border-radius: 15px; font-size: 12px; margin-right: 5px; margin-bottom: 10px; }
+        
+        /* 切换时的淡入动画 */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* 手机端适配：当屏幕较小时，变成上下排版 */
+        @media (max-width: 600px) { 
+            .content-wrapper { flex-direction: column; } 
+            .timeline, .details { width: 100%; border-right: none; } 
+            .timeline { display: flex; overflow-x: auto; white-space: nowrap; padding: 0; }
+            .day-btn { text-align: center; border-left: none; border-bottom: 2px solid transparent; } 
+            .day-btn.active { border-bottom-color: var(--primary); } 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>✨ 我们的奇妙探险之旅 ✨</h1>
+            <p style="margin-top: 10px; opacity: 0.8; font-size: 14px;">准备好出发了吗？</p>
+        </header>
+        <div class="content-wrapper">
+            <div class="timeline">
+                <button class="day-btn active" onclick="switchDay(event, 'day1')">Day 1: 抵达与探索</button>
+                <button class="day-btn" onclick="switchDay(event, 'day2')">Day 2: 城市漫游</button>
+                <button class="day-btn" onclick="switchDay(event, 'day3')">Day 3: 惊喜盲盒</button>
+            </div>
+            
+            <div class="details">
+                <div id="day1" class="day-content active">
+                    <h2>第一天：开启旅程 ✈️</h2>
+                    <span class="tag">📍 机场</span> <span class="tag">🍔 特色美食</span>
+                    <p><strong>上午：</strong>抵达目的地，前往酒店办理入住，放下行李轻松上阵。</p>
+                    <p><strong>下午：</strong>在酒店附近的老城区漫步，感受当地风情，寻找第一口地道美食。</p>
+                    <p><strong>晚上：</strong>前往观景台看夜景，干杯庆祝旅程开始！</p>
+                </div>
+                <div id="day2" class="day-content">
+                    <h2>第二天：深入当地 🏛️</h2>
+                    <span class="tag">📸 必打卡</span> <span class="tag">☕ 咖啡馆</span>
+                    <p><strong>上午：</strong>参观核心地标建筑，记得穿颜色鲜艳的衣服，拍照最出片。</p>
+                    <p><strong>下午：</strong>钻进当地人爱去的巷子，找一家评分超高的独立咖啡馆休息发呆。</p>
+                    <p><strong>晚上：</strong>预订了一家超棒的特色餐厅，享用大餐。</p>
+                </div>
+                <div id="day3" class="day-content">
+                    <h2>第三天：自由与惊喜 🎁</h2>
+                    <span class="tag">🛍️ 购物</span> <span class="tag">🌅 日落</span>
+                    <p><strong>全天：</strong>留白时间。我们可以去逛逛当地的市集，或者买些喜欢的纪念品。</p>
+                    <p><strong>傍晚：</strong>去海边或江边看日落，为这次旅行画上完美的句号。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchDay(evt, dayId) {
+            // 隐藏所有内容面板
+            let contents = document.getElementsByClassName("day-content");
+            for (let i = 0; i < contents.length; i++) {
+                contents[i].className = contents[i].className.replace(" active", "");
+            }
+            // 取消所有按钮的选中状态
+            let btns = document.getElementsByClassName("day-btn");
+            for (let i = 0; i < btns.length; i++) {
+                btns[i].className = btns[i].className.replace(" active", "");
+            }
+            // 显示当前点击的内容，并高亮按钮
+            document.getElementById(dayId).className += " active";
+            evt.currentTarget.className += " active";
+        }
+    </script>
+</body>
+</html>
